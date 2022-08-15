@@ -1,0 +1,26 @@
+.display {
+  height: 50px;
+  width: 100%;
+  margin-bottom: 20px;
+  padding: 0 10px;
+  border-radius: 10px;
+  display: flex;
+  font-weight: bold;
+  align-items: center;
+  justify-content: flex-end;
+  box-sizing: border-box;
+  color: orange;
+  }
+/* .screen{
+  height: 40px;
+  width: 100%;
+  margin-bottom: 5px;
+  padding: 0 10px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  color: orange;
+  box-sizing: border-box;
+  
+} */
