@@ -6,8 +6,8 @@ import Button from "./components/Button";
 import './App.css'
 
 const btnValues = [
-  {id:"clear",value:'AC'},{id:'addminus',value:"+-"},{id:'percent',value:"%"},{id:'divide',value:"/"},
-  {id:'seven',value:7}, {id:'eight',value:8}, {id:'nine',value:9}, {id:'multiply',value:"X"},
+  {id:"clear",value:'AC'},{id:'addminus',value:"+-"},{id:'percent',value:"%"},{id:'divide',value:'/'},
+  {id:'seven',value:7}, {id:'eight',value:8}, {id:'nine',value:9}, {id:'multiply',value:"x"},
   {id:'four',value:4}, {id:'five',value:5}, {id:'six',value:6}, {id:'subtract',value:"-"},
   {id:'one',value:1}, {id:'two',value:2}, {id:'three',value:3}, {id:'add',value:"+"},
   {id:'zero',value:0}, {id:'decimal',value:"."}, {id:'equals',value:"="}
@@ -30,7 +30,9 @@ let [display, setDisplay] = useState('');
   const numClickHandler = (e) => {
     e.preventDefault();
     const value = e.target.innerHTML;
-      setDisplay(display.concat(value));
+    
+    setDisplay(display.concat(value));
+
       setCalc({
         ...calc,
         num:
@@ -40,8 +42,7 @@ let [display, setDisplay] = useState('');
             ? toLocaleString(Number(removeSpaces(calc.num + value)))
             : toLocaleString(calc.num + value),
         res: !calc.sign ? 0 : calc.res,
-      });
-    
+      });    
   };
 
   const commaClickHandler = (e) => {
@@ -70,15 +71,17 @@ let [display, setDisplay] = useState('');
   const equalsClickHandler = (e) => {
     if (calc.sign && calc.num) {
       const math = (a, b, sign) =>
-        sign === "+"
+        sign === "x"
+          ? a * b 
+          : sign === "/" 
+          ? a / b
+          : sign === "+"
           ? a + b
-          : sign === "-"
-          ? a - b
-          : sign === "X"
-          ? a * b
-          : a / b;
+          : a - b
+               
       
       setDisplay(display.concat(e.target.innerHTML));
+      
       setCalc({
         ...calc,
         res:
@@ -149,7 +152,7 @@ let [display, setDisplay] = useState('');
                   ? percentClickHandler
                   : btn.value === "="
                   ? equalsClickHandler
-                  : btn.value === "/" || btn.value === "X" || btn.value === "-" || btn.value === "+"
+                  : btn.value === "/" || btn.value === "x" || btn.value === "-" || btn.value === "+"
                   ? signClickHandler
                   : btn.value === "."
                   ? commaClickHandler
