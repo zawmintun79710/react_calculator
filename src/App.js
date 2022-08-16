@@ -25,11 +25,12 @@ const App = () => {
     num: 0,
     res: 0,
   });
+let [display, setDisplay] = useState('');
 
   const numClickHandler = (e) => {
     e.preventDefault();
     const value = e.target.innerHTML;
-      
+      setDisplay(display.concat(value));
       setCalc({
         ...calc,
         num:
@@ -47,6 +48,7 @@ const App = () => {
     e.preventDefault();
     const value = e.target.innerHTML;
 
+    setDisplay(display.concat(value));
     setCalc({
       ...calc,
       num: !calc.num.toString().includes(".") ? calc.num + value : calc.num,
@@ -56,7 +58,7 @@ const App = () => {
   const signClickHandler = (e) => {
     e.preventDefault();
     const value = e.target.innerHTML;
-    
+    setDisplay(display.concat(value));
     setCalc({
       ...calc,
       sign: value,
@@ -65,7 +67,7 @@ const App = () => {
     });
   };
 
-  const equalsClickHandler = () => {
+  const equalsClickHandler = (e) => {
     if (calc.sign && calc.num) {
       const math = (a, b, sign) =>
         sign === "+"
@@ -76,6 +78,7 @@ const App = () => {
           ? a * b
           : a / b;
       
+      setDisplay(display.concat(e.target.innerHTML));
       setCalc({
         ...calc,
         res:
@@ -94,7 +97,9 @@ const App = () => {
     }
   };
 
-  const invertClickHandler = () => {
+  const invertClickHandler = (e) => {
+
+    setDisplay(display.concat(e.target.innerHTML));
     setCalc({
       ...calc,
       num: calc.num ? toLocaleString(removeSpaces(calc.num) * -1) : 0,
@@ -103,10 +108,11 @@ const App = () => {
     });
   };
 
-  const percentClickHandler = () => {
+  const percentClickHandler = (e) => {
     let num = calc.num ? parseFloat(removeSpaces(calc.num)) : 0;
     let res = calc.res ? parseFloat(removeSpaces(calc.res)) : 0;
 
+    setDisplay(display.concat(e.target.innerHTML));
     setCalc({
       ...calc,
       num: (num /= Math.pow(100, 1)),
@@ -116,6 +122,7 @@ const App = () => {
   };
 
   const resetClickHandler = () => {
+    setDisplay('');
     setCalc({
       ...calc,
       sign: "",
@@ -126,7 +133,7 @@ const App = () => {
 
   return (
     <Wrapper>
-      <Screen value={calc.num ? calc.num : calc.sign ? calc.sign : calc.res} />
+      <Screen value={calc.num ? calc.num : calc.sign ? calc.sign : calc.res} display={display} />
       <ButtonBox>
         {btnValues.map((btn) => {
           return (
