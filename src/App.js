@@ -10,7 +10,7 @@ const btnValues = [
   {id:'seven',value:7}, {id:'eight',value:8}, {id:'nine',value:9}, {id:'multiply',value:"x"},
   {id:'four',value:4}, {id:'five',value:5}, {id:'six',value:6}, {id:'subtract',value:"-"},
   {id:'one',value:1}, {id:'two',value:2}, {id:'three',value:3}, {id:'add',value:"+"},
-  {id:'zero',value:0}, {id:'decimal',value:"."}, {id:'equals',value:"="}
+  {id:'zero',value:0},{id:'decimal',value:"."}, {id:'equals',value:"="}
 ];
 
 const toLocaleString = (num) =>
@@ -31,25 +31,37 @@ let [display, setDisplay] = useState('');
     e.preventDefault();
     const value = e.target.innerHTML;
     
-    setDisplay(display.concat(value));
+    setDisplay(
+      display === "" && value === "0"
+            ? "0"
+            : (display < 1 && value >= 0 && display.includes(".")) || display >=1
+            ? display+value
+            : calc.sign
+            ? display+value
+            : removeSpaces(calc.num) % 1 === 0
+            ? toLocaleString(Number(removeSpaces(calc.num + value)))
+            : toLocaleString(calc.num + value)
+    );
 
       setCalc({
         ...calc,
         num:
           calc.num === 0 && value === "0"
             ? "0"
+            : (display < 1 && value >= 0 && display.includes(".")) || display >=1
+            ? display.concat(value)
             : removeSpaces(calc.num) % 1 === 0
             ? toLocaleString(Number(removeSpaces(calc.num + value)))
-            : toLocaleString(calc.num + value),
+            : toLocaleString(removeSpaces(calc.num + value)),
         res: !calc.sign ? 0 : calc.res,
       });    
   };
 
-  const commaClickHandler = (e) => {
+  const decimalClickHandler = (e) => {
     e.preventDefault();
     const value = e.target.innerHTML;
 
-    setDisplay(display.concat(value));
+    setDisplay(!calc.num.toString().includes(".") ? calc.num + value : calc.num);
     setCalc({
       ...calc,
       num: !calc.num.toString().includes(".") ? calc.num + value : calc.num,
@@ -59,7 +71,8 @@ let [display, setDisplay] = useState('');
   const signClickHandler = (e) => {
     e.preventDefault();
     const value = e.target.innerHTML;
-    setDisplay(display.concat(value));
+    
+    setDisplay(display.endsWith(value)? display: display + value);
     setCalc({
       ...calc,
       sign: value,
@@ -69,40 +82,40 @@ let [display, setDisplay] = useState('');
   };
 
   const equalsClickHandler = (e) => {
+    
+   
     if (calc.sign && calc.num) {
-      const math = (a, b, sign) =>
+
+      const math = (a,b,sign) =>
         sign === "x"
           ? a * b 
           : sign === "/" 
           ? a / b
           : sign === "+"
           ? a + b
-          : a - b
-               
-      
-      setDisplay(display.concat(e.target.innerHTML));
+          : a - b     
       
       setCalc({
         ...calc,
-        res:
-          calc.num === "0" && calc.sign === "/"
+        res: 
+          calc.num === 0 && calc.sign === "/"
             ? "Can't divide with 0"
             : toLocaleString(
                 math(
-                  Number(removeSpaces(calc.res)),
-                  Number(removeSpaces(calc.num)),
-                  calc.sign
-                )
-              ),
+                  Number(calc.res),
+                  Number(calc.num),
+                  calc.sign                  
+      )
+      ),
+      
         sign: "",
-        num: 0,
-      });
-    }
-  };
+        num: 0,               
+  });
+  setDisplay(display+e.target.innerHTML);
+  }
+}
 
-  const invertClickHandler = (e) => {
-
-    setDisplay(display.concat(e.target.innerHTML));
+  const invertClickHandler = () => {
     setCalc({
       ...calc,
       num: calc.num ? toLocaleString(removeSpaces(calc.num) * -1) : 0,
@@ -111,11 +124,10 @@ let [display, setDisplay] = useState('');
     });
   };
 
-  const percentClickHandler = (e) => {
+  const percentClickHandler = () => {
     let num = calc.num ? parseFloat(removeSpaces(calc.num)) : 0;
     let res = calc.res ? parseFloat(removeSpaces(calc.res)) : 0;
 
-    setDisplay(display.concat(e.target.innerHTML));
     setCalc({
       ...calc,
       num: (num /= Math.pow(100, 1)),
@@ -125,7 +137,7 @@ let [display, setDisplay] = useState('');
   };
 
   const resetClickHandler = () => {
-    setDisplay('');
+    setDisplay("");
     setCalc({
       ...calc,
       sign: "",
@@ -138,9 +150,10 @@ let [display, setDisplay] = useState('');
     <Wrapper>
       <Screen value={calc.num ? calc.num : calc.sign ? calc.sign : calc.res} display={display} />
       <ButtonBox>
-        {btnValues.map((btn) => {
+        {btnValues.map((btn,index) => {
           return (
             <Button
+              key={index}
               id={btn.id}
               value={btn.value}
               onClick={
@@ -155,7 +168,7 @@ let [display, setDisplay] = useState('');
                   : btn.value === "/" || btn.value === "x" || btn.value === "-" || btn.value === "+"
                   ? signClickHandler
                   : btn.value === "."
-                  ? commaClickHandler
+                  ? decimalClickHandler
                   : numClickHandler
               }
             />
