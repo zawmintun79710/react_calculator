@@ -12,3 +12,74 @@ body {
   align-items: center;
   justify-content: center;  
 }
+
+.wrapper {
+    width: 340px;
+    height: 540px;
+    padding: 10px;
+    border-radius: 10px;
+    border: 3px solid black;
+  }
+
+.display {
+  height: 50px;
+  width: 100%;
+  margin-bottom: 20px;
+  padding: 0 10px;
+  border-radius: 10px;
+  display: flex;
+  font-weight: bold;
+  align-items: center;
+  justify-content: flex-end;
+  box-sizing: border-box;
+  }
+.result{
+  height: 40px;
+  width: 100%;
+  margin-bottom: 5px;
+  padding: 0 10px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  color: orange;
+  box-sizing: border-box;
+}
+
+.buttonBox {
+    width: 100%;
+    height: calc(100% - 110px);
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(5, 1fr);
+    grid-gap: 10px;
+  }
+
+  button {
+    border: none;
+    background-color: white;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 50%;
+    outline: none;
+  }
+  
+  button:active {
+    background-color: rgba(240, 236, 226, 0.466);
+    border-radius: 50%;
+  }
+  
+  /* #zero{
+    grid-column: 1 / span 2;
+  } */
+  #clear,#addminus,#percent,#divide,#multiply,#add,#subtract{
+    color: rgb(255, 166, 0);
+  }
+  #equals{
+    background-color: rgba(255, 166, 0, 0.795);
+    color: white;
+  }
+button:active{
+  font-size: 15px;
+}
