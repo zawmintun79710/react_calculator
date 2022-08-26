@@ -2,12 +2,13 @@ import React,{useState} from "react";
 import { Textfit } from "react-textfit";
 import "./App.css"
 
+
 const btnValues = [
   {id:"clear",value:'AC'},{id:'addminus',value:"+-"},{id:'percent',value:"%"},{id:'divide',value:'/'},
   {id:'seven',value:7}, {id:'eight',value:8}, {id:'nine',value:9}, {id:'multiply',value:"*"},
   {id:'four',value:4}, {id:'five',value:5}, {id:'six',value:6}, {id:'subtract',value:"-"},
   {id:'one',value:1}, {id:'two',value:2}, {id:'three',value:3}, {id:'add',value:"+"},
-  {id:"rotate", value:<i className="fa-solid fa-bring-forward"></i>},{id:'zero',value:0},{id:'decimal',value:"."}, {id:'equals',value:"="}
+  {id:"rotate", value:"rotate"},{id:'zero',value:0},{id:'decimal',value:"."}, {id:'equals',value:"="}
 ];
 
 const toLocaleString = (num) =>
